@@ -5,20 +5,27 @@ using UnityEngine.UI;
 public class PhotoManager : MonoBehaviour
 {
     public List<GameObject> photoPrefabs; // Prefabs delle foto
-    public Transform pilePosition; // Posizione della pila di foto
-    public Transform handPosition; // Posizione della foto in mano
-    public Transform reservePosition; // Posizione della zona di riserva
-    public Transform album;
+    public Transform pilePosition; // Posizione della pila
+    public Transform handPosition; // Dove va la foto in mano
+    public Transform reservePosition; // Dove va la riserva
+    public Transform album; // Oggetto album
+
     public Button pickPhotoButton;
     public Button reservePhotoButton;
     public Button placePhotoButton;
     public Button rotatePhotoButton;
     public Button lowerPhotoButton;
+    public Button nextPageButton;
+    public Button previousPageButton;
+
+    public PageSlotManager pageSlotManager; // Riferimento al gestore delle pagine
 
     private Stack<GameObject> photoStack = new Stack<GameObject>();
     private GameObject currentPhoto;
+    private GameObject reservedPhoto;
     private bool isPhotoRotated = false;
     private bool isPhotoLowered = false;
+
     private Vector3 originalPhotoPosition;
     private Quaternion originalPhotoRotation;
 
@@ -26,10 +33,12 @@ public class PhotoManager : MonoBehaviour
     {
         InitializePhotos();
         pickPhotoButton.onClick.AddListener(PickPhoto);
-        reservePhotoButton.onClick.AddListener(PlaceInReserve);
-        placePhotoButton.onClick.AddListener(() => PlaceInAlbum(null)); // Aggiustare per usare slot corretti
+        reservePhotoButton.onClick.AddListener(ToggleReserveState);
+        // RIMOSSO: placePhotoButton.onClick.AddListener(PlaceInAlbum);
         rotatePhotoButton.onClick.AddListener(RotatePhoto);
         lowerPhotoButton.onClick.AddListener(TogglePhotoPosition);
+        nextPageButton.onClick.AddListener(pageSlotManager.NextPage);
+        previousPageButton.onClick.AddListener(pageSlotManager.PreviousPage);
         UpdateUIButtons();
     }
 
@@ -44,7 +53,8 @@ public class PhotoManager : MonoBehaviour
             photo.SetActive(false);
             photoStack.Push(photo);
         }
-        Debug.Log("Pila di foto inizializzata con " + photoStack.Count + " foto.");
+
+        Debug.Log("Pila inizializzata con " + photoStack.Count + " foto.");
     }
 
     void ShuffleList(List<GameObject> list)
@@ -60,36 +70,66 @@ public class PhotoManager : MonoBehaviour
 
     public void PickPhoto()
     {
-        if (currentPhoto == null && photoStack.Count > 0)
+        Debug.Log("Tentativo di prendere una foto...");
+
+        if (currentPhoto != null)
+        {
+            Debug.Log("Hai già una foto in mano.");
+            return;
+        }
+
+        if (photoStack.Count > 0)
         {
             currentPhoto = photoStack.Pop();
             currentPhoto.SetActive(true);
             currentPhoto.transform.position = handPosition.position;
-            originalPhotoPosition = handPosition.position;
+            originalPhotoPosition = currentPhoto.transform.position;
             originalPhotoRotation = currentPhoto.transform.rotation;
+
             isPhotoRotated = false;
             isPhotoLowered = false;
+
             Debug.Log("Foto presa in mano: " + currentPhoto.name);
         }
         else
         {
-            Debug.Log("Nessuna foto da prendere o già una in mano.");
+            Debug.Log("Nessuna foto disponibile nella pila.");
         }
+
         UpdateUIButtons();
     }
 
-    public void PlaceInReserve()
+    public void ToggleReserveState()
     {
-        if (currentPhoto != null)
+        if (currentPhoto != null && reservedPhoto == null)
         {
             currentPhoto.transform.position = reservePosition.position;
+            reservedPhoto = currentPhoto;
             Debug.Log("Foto messa in riserva: " + currentPhoto.name);
             currentPhoto = null;
         }
+        else if (currentPhoto == null && reservedPhoto != null)
+        {
+            currentPhoto = reservedPhoto;
+            currentPhoto.transform.position = handPosition.position;
+            originalPhotoPosition = currentPhoto.transform.position;
+            originalPhotoRotation = currentPhoto.transform.rotation;
+
+            reservedPhoto = null;
+            isPhotoRotated = false;
+            isPhotoLowered = false;
+
+            Debug.Log("Foto presa dalla riserva.");
+        }
+        else if (currentPhoto != null && reservedPhoto != null)
+        {
+            Debug.Log("Hai già una foto in mano e una in riserva. Azione non consentita.");
+        }
         else
         {
-            Debug.Log("Nessuna foto da mettere in riserva.");
+            Debug.Log("Nessuna azione disponibile con lo stato attuale.");
         }
+
         UpdateUIButtons();
     }
 
@@ -97,24 +137,37 @@ public class PhotoManager : MonoBehaviour
     {
         if (currentPhoto != null && slot != null)
         {
-            currentPhoto.transform.position = slot.position; // Piazza la foto nello slot
-            currentPhoto.transform.SetParent(album); // La foto diventa figlia dell'album
-            Debug.Log("Foto posizionata nell'album: " + currentPhoto.name);
-            currentPhoto = null; // Ora non hai più la foto in mano
+            pageSlotManager.AssignPhotoToSlot(currentPhoto, slot);
+            Debug.Log("Foto piazzata nell'album nella pagina: " + pageSlotManager.GetCurrentPageName());
+            currentPhoto = null;
         }
         else
         {
-            Debug.Log("Nessuna foto in mano o slot non valido.");
+            Debug.Log("Errore: nessuna foto o slot non valido.");
         }
-        UpdateUIButtons(); // Ricarica i pulsanti
+
+        UpdateUIButtons();
     }
 
     public void RotatePhoto()
     {
         if (currentPhoto != null)
         {
-            float rotationZ = isPhotoRotated ? 0f : 180f; // Ruota solo sull'asse Z
-            currentPhoto.transform.Rotate(0, 0, rotationZ);
+            if (isPhotoLowered)
+            {
+                Debug.Log("Non puoi ruotare la foto mentre è abbassata.");
+                return;
+            }
+
+            if (isPhotoRotated)
+            {
+                currentPhoto.transform.rotation = originalPhotoRotation;
+            }
+            else
+            {
+                currentPhoto.transform.rotation = originalPhotoRotation * Quaternion.Euler(0, 0, 180);
+            }
+
             isPhotoRotated = !isPhotoRotated;
             Debug.Log("Foto ruotata: " + (isPhotoRotated ? "Retro" : "Fronte"));
         }
@@ -124,7 +177,8 @@ public class PhotoManager : MonoBehaviour
     {
         if (currentPhoto != null)
         {
-            float offsetZ = -1.0f; // Quanto deve spostarsi la foto sull'asse Z
+            float offsetZ = -1.0f;
+
             if (isPhotoLowered)
             {
                 currentPhoto.transform.position = originalPhotoPosition;
@@ -133,17 +187,30 @@ public class PhotoManager : MonoBehaviour
             {
                 currentPhoto.transform.position += new Vector3(0, 0, offsetZ);
             }
+
             isPhotoLowered = !isPhotoLowered;
-            Debug.Log("Foto " + (isPhotoLowered ? "Abbassata" : "Ripristinata"));
+            Debug.Log("Foto " + (isPhotoLowered ? "spostata in avanti" : "ripristinata"));
         }
     }
 
     private void UpdateUIButtons()
     {
-        bool hasPhotoInHand = currentPhoto != null; // Verifica se hai una foto in mano
-        rotatePhotoButton.gameObject.SetActive(hasPhotoInHand); // Mostra o nascondi il pulsante per ruotare
-        lowerPhotoButton.gameObject.SetActive(hasPhotoInHand); // Mostra o nascondi il pulsante per abbassare
-        placePhotoButton.gameObject.SetActive(hasPhotoInHand); // Mostra o nascondi il pulsante per piazzare nell'album
-    
+        bool hasPhoto = currentPhoto != null;
+
+        rotatePhotoButton.gameObject.SetActive(hasPhoto);
+        lowerPhotoButton.gameObject.SetActive(hasPhoto);
+        placePhotoButton.gameObject.SetActive(false); // disabilitato il pulsante automatico
+        reservePhotoButton.gameObject.SetActive(hasPhoto || (!hasPhoto && reservedPhoto != null));
+    }
+
+    public GameObject GetCurrentPhotoInHand()
+    {
+        return currentPhoto;
+    }
+
+    public void ClearCurrentPhoto()
+    {
+        currentPhoto = null;
+        UpdateUIButtons();
     }
 }
