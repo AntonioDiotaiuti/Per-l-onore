@@ -15,7 +15,7 @@ public class PageSlotManager : MonoBehaviour
     }
 
     public List<AlbumPage> pages;
-    public GameObject slotHighlightPrefab; // UI evidenziatore semplice
+    public GameObject slotHighlightPrefab;
 
     private Dictionary<string, Dictionary<Transform, GameObject>> pagePhotoMap = new();
     private Dictionary<Transform, GameObject> slotHighlights = new();
@@ -33,7 +33,6 @@ public class PageSlotManager : MonoBehaviour
 
             foreach (var slot in page.slots)
             {
-                // Crea evidenziatore UI (opzionale ma elegante)
                 if (slotHighlightPrefab)
                 {
                     GameObject highlight = Instantiate(slotHighlightPrefab, slot.position, Quaternion.identity, slot);
@@ -41,7 +40,6 @@ public class PageSlotManager : MonoBehaviour
                     slotHighlights[slot] = highlight;
                 }
 
-                // Aggiungi componente di interazione
                 SlotClickHandler clickHandler = slot.gameObject.AddComponent<SlotClickHandler>();
                 clickHandler.Initialize(this, slot);
             }
@@ -82,7 +80,6 @@ public class PageSlotManager : MonoBehaviour
 
         currentPageIndex = index;
 
-        // Attiva gli highlight solo per gli slot di questa pagina
         foreach (var slot in slotHighlights.Keys)
         {
             slotHighlights[slot].SetActive(false);
@@ -108,10 +105,9 @@ public class PageSlotManager : MonoBehaviour
             GameObject existingPhoto = pagePhotoMap[pageName][slot];
             pagePhotoMap[pageName][slot] = null;
             existingPhoto.transform.SetParent(null);
-            photoManager.ClearCurrentPhoto();
-
-            existingPhoto.transform.position = photoManager.transform.position;
-            photoInHand = existingPhoto;
+            existingPhoto.transform.position = photoManager.handPosition.position;
+            photoManager.SetCurrentPhoto(existingPhoto);
+            return;
         }
 
         if (photoInHand != null)
