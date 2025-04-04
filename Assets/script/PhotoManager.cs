@@ -131,7 +131,7 @@ public class PhotoManager : MonoBehaviour
     {
         if (currentPhoto != null)
         {
-            float offsetZ = -1.0f;
+            float offsetZ = -1.5f;
             if (isPhotoLowered)
                 currentPhoto.transform.position = originalPhotoPosition;
             else
