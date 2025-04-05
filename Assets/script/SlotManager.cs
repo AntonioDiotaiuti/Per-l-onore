@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class PageSlotManager : MonoBehaviour
 {
+    public Transform leftPageAnchor;
+    public Transform rightPageAnchor;
+    public Button nextButton;
+    public Button previousButton;
     [System.Serializable]
     public class AlbumPage
     {
@@ -20,6 +24,7 @@ public class PageSlotManager : MonoBehaviour
     private Dictionary<string, Dictionary<Transform, GameObject>> pagePhotoMap = new();
     private Dictionary<Transform, GameObject> slotHighlights = new();
     private int currentPageIndex = 0;
+    private Dictionary<GameObject, Vector3> originalScales = new();
     private PhotoManager photoManager;
 
     void Start()
@@ -29,13 +34,14 @@ public class PageSlotManager : MonoBehaviour
         foreach (var page in pages)
         {
             pagePhotoMap[page.pageName] = new Dictionary<Transform, GameObject>();
+            originalScales[page.pageObject] = page.pageObject.transform.localScale;
             page.pageObject.SetActive(false);
 
             foreach (var slot in page.slots)
             {
                 if (slotHighlightPrefab)
                 {
-                    GameObject highlight = Instantiate(slotHighlightPrefab, slot.position, Quaternion.identity, slot);
+                    GameObject highlight = Instantiate(slotHighlightPrefab, slot.position + new Vector3(0, 0.2f, 0), Quaternion.Euler(90, 0, 0), slot);
                     highlight.SetActive(false);
                     slotHighlights[slot] = highlight;
                 }
@@ -44,6 +50,9 @@ public class PageSlotManager : MonoBehaviour
                 clickHandler.Initialize(this, slot);
             }
         }
+
+        nextButton.onClick.AddListener(NextPage);
+        previousButton.onClick.AddListener(PreviousPage);
 
         ShowPage(currentPageIndex);
     }
@@ -57,24 +66,28 @@ public class PageSlotManager : MonoBehaviour
             page.pageObject.SetActive(false);
         }
 
-        AlbumPage currentPage = pages[index];
-        currentPage.pageObject.SetActive(true);
+        int rightPageIndex = index + 1;
 
-        if (currentPage.animator != null)
+        AlbumPage leftPage = pages[index];
+        leftPage.pageObject.SetActive(true);
+        leftPage.pageObject.transform.position = leftPageAnchor.position;
+        leftPage.pageObject.transform.rotation = leftPageAnchor.rotation;
+        leftPage.pageObject.transform.localScale = leftPageAnchor.lossyScale;
+        if (leftPage.animator != null)
         {
-            currentPage.animator.SetTrigger("OpenPage");
+            leftPage.animator.SetTrigger("OpenPage");
         }
 
-        if (pagePhotoMap.TryGetValue(currentPage.pageName, out var slotMap))
+        if (rightPageIndex < pages.Count)
         {
-            foreach (var kvp in slotMap)
+            AlbumPage rightPage = pages[rightPageIndex];
+            rightPage.pageObject.SetActive(true);
+            rightPage.pageObject.transform.position = rightPageAnchor.position;
+            rightPage.pageObject.transform.rotation = rightPageAnchor.rotation;
+            rightPage.pageObject.transform.localScale = rightPageAnchor.lossyScale;
+            if (rightPage.animator != null)
             {
-                if (kvp.Value != null)
-                {
-                    kvp.Value.transform.position = kvp.Key.position;
-                    kvp.Value.transform.SetParent(kvp.Key);
-                    kvp.Value.SetActive(true);
-                }
+                rightPage.animator.SetTrigger("OpenPage");
             }
         }
 
@@ -84,11 +97,36 @@ public class PageSlotManager : MonoBehaviour
         {
             slotHighlights[slot].SetActive(false);
         }
-        foreach (var slot in currentPage.slots)
+
+        foreach (var slot in leftPage.slots)
         {
             if (slotHighlights.ContainsKey(slot))
             {
                 slotHighlights[slot].SetActive(true);
+            }
+        }
+
+        if (rightPageIndex < pages.Count)
+        {
+            foreach (var slot in pages[rightPageIndex].slots)
+            {
+                if (slotHighlights.ContainsKey(slot))
+                {
+                    slotHighlights[slot].SetActive(true);
+                }
+            }
+        }
+
+        UpdateNavigationButtons();
+    }
+
+    void OnApplicationQuit()
+    {
+        foreach (var page in pages)
+        {
+            if (originalScales.TryGetValue(page.pageObject, out Vector3 originalScale))
+            {
+                page.pageObject.transform.localScale = originalScale;
             }
         }
     }
@@ -138,17 +176,31 @@ public class PageSlotManager : MonoBehaviour
 
     public void NextPage()
     {
-        ShowPage((currentPageIndex + 1) % pages.Count);
+        int nextIndex = currentPageIndex + 2;
+        if (nextIndex < pages.Count)
+        {
+            ShowPage(nextIndex);
+        }
     }
 
     public void PreviousPage()
     {
-        ShowPage((currentPageIndex - 1 + pages.Count) % pages.Count);
+        int previousIndex = currentPageIndex - 2;
+        if (previousIndex >= 0)
+        {
+            ShowPage(previousIndex);
+        }
     }
 
     public string GetCurrentPageName()
     {
         return pages[currentPageIndex].pageName;
+    }
+
+    private void UpdateNavigationButtons()
+    {
+        nextButton.interactable = (currentPageIndex + 2 < pages.Count);
+        previousButton.interactable = (currentPageIndex - 2 >= 0);
     }
 }
 
