@@ -26,10 +26,12 @@ public class PageSlotManager : MonoBehaviour
     private int currentPageIndex = 0;
     private Dictionary<GameObject, Vector3> originalScales = new();
     private PhotoManager photoManager;
+    private PhotoValidationManager validationManager;
 
     void Start()
     {
         photoManager = FindFirstObjectByType<PhotoManager>();
+        validationManager = FindFirstObjectByType<PhotoValidationManager>();
 
         foreach (var page in pages)
         {
@@ -138,7 +140,9 @@ public class PageSlotManager : MonoBehaviour
 
         GameObject photoInHand = photoManager.GetCurrentPhotoInHand();
 
-        if (pagePhotoMap[pageName].ContainsKey(slot) && pagePhotoMap[pageName][slot] != null)
+        if (pagePhotoMap[pageName].ContainsKey(slot) && pagePhotoMap[pageName][slot] != null &&
+            (!validationManager.HasAssignment(pagePhotoMap[pageName][slot]) ||
+             !validationManager.IsPhotoInCorrectSlot(pagePhotoMap[pageName][slot], slot)))
         {
             GameObject existingPhoto = pagePhotoMap[pageName][slot];
             pagePhotoMap[pageName][slot] = null;
@@ -154,6 +158,13 @@ public class PageSlotManager : MonoBehaviour
             photoInHand.transform.position = slot.position;
             photoInHand.transform.SetParent(slot);
             photoManager.ClearCurrentPhoto();
+
+            // Se la foto è nello slot corretto, disattiva il collider
+            if (validationManager.IsPhotoInCorrectSlot(photoInHand, slot))
+            {
+                Collider col = photoInHand.GetComponent<Collider>();
+                if (col) col.enabled = false;
+            }
         }
     }
 
