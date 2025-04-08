@@ -171,13 +171,6 @@ public class PageSlotManager : MonoBehaviour
             photoInHand.transform.SetParent(slot);
             photoManager.ClearCurrentPhoto();
 
-
-            // Se la foto è nello slot corretto, disattiva il collider
-            if (validationManager.IsPhotoInCorrectSlot(photoInHand, slot))
-            {
-                Collider col = photoInHand.GetComponent<Collider>();
-                if (col) col.enabled = false;
-            }
         }
     }
 
