@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6445839331105662161}
   - component: {fileID: 179931165083466122}
   - component: {fileID: 187796104995417854}
+  - component: {fileID: 3281576996365317255}
   m_Layer: 0
   m_Name: Photo3
   m_TagString: Untagged
@@ -109,6 +110,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3281576996365317255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8520469469552349359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: babb0d9d627653f44a03719171a428f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 0
 --- !u!1 &8899988341545772269
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +188,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f1e459f21e822ea4a846c4bc1e313f1b, type: 2}
+  - {fileID: 2100000, guid: 4af9e9ac6fcf0d24b8ce3373483571d2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

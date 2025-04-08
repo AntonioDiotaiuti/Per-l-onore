@@ -48,6 +48,12 @@ public class PhotoManager : MonoBehaviour
         foreach (var photoPrefab in shuffledPhotos)
         {
             GameObject photo = Instantiate(photoPrefab, pilePosition.position, Quaternion.identity);
+            var photoHandler = photo.GetComponent<PhotoHandler>();
+            if (photoHandler != null)
+            {
+                string IDstring = photoPrefab.name.Replace("Photo", "");
+                photoHandler.ID = int.Parse(IDstring);
+            }
             photo.SetActive(false);
             photoStack.Push(photo);
         }

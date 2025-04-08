@@ -48,7 +48,7 @@ public class PageSlotManager : MonoBehaviour
                     slotHighlights[slot] = highlight;
                 }
 
-                SlotClickHandler clickHandler = slot.gameObject.AddComponent<SlotClickHandler>();
+                SlotClickHandler clickHandler = slot.GetComponent<SlotClickHandler>();
                 clickHandler.Initialize(this, slot);
             }
         }
@@ -133,31 +133,44 @@ public class PageSlotManager : MonoBehaviour
         }
     }
 
-    public void OnSlotClicked(Transform slot)
+
+    public void OnSlotClicked(Transform slot, SlotClickHandler slotHandler)
     {
         var page = pages[currentPageIndex];
         var pageName = page.pageName;
 
+
         GameObject photoInHand = photoManager.GetCurrentPhotoInHand();
 
-        if (pagePhotoMap[pageName].ContainsKey(slot) && pagePhotoMap[pageName][slot] != null &&
-            (!validationManager.HasAssignment(pagePhotoMap[pageName][slot]) ||
-             !validationManager.IsPhotoInCorrectSlot(pagePhotoMap[pageName][slot], slot)))
+        if (pagePhotoMap[pageName].ContainsKey(slot) && pagePhotoMap[pageName][slot] != null)
         {
             GameObject existingPhoto = pagePhotoMap[pageName][slot];
-            pagePhotoMap[pageName][slot] = null;
-            existingPhoto.transform.SetParent(null);
-            existingPhoto.transform.position = photoManager.handPosition.position;
-            photoManager.SetCurrentPhoto(existingPhoto);
+            if (existingPhoto != null)
+            {
+                var photoHandler = existingPhoto.GetComponent<PhotoHandler>();
+                if (photoHandler != null && !photoHandler.IsSameID(slotHandler.AssociatedIDPhoto)) // get photo in hand if the ID photo != ID slot
+                {
+                    pagePhotoMap[pageName][slot] = null;
+                    existingPhoto.transform.SetParent(null);
+                    existingPhoto.transform.position = photoManager.handPosition.position;
+                    photoManager.SetCurrentPhoto(existingPhoto);
+                } else
+                {
+                    // TODO: handle pick up when photo is in position
+                }
+            }
+
             return;
         }
 
         if (photoInHand != null)
         {
+            Debug.Log("Placing photo!");
             pagePhotoMap[pageName][slot] = photoInHand;
             photoInHand.transform.position = slot.position;
             photoInHand.transform.SetParent(slot);
             photoManager.ClearCurrentPhoto();
+
 
             // Se la foto è nello slot corretto, disattiva il collider
             if (validationManager.IsPhotoInCorrectSlot(photoInHand, slot))
@@ -215,19 +228,4 @@ public class PageSlotManager : MonoBehaviour
     }
 }
 
-public class SlotClickHandler : MonoBehaviour, IPointerClickHandler
-{
-    private PageSlotManager manager;
-    private Transform slot;
 
-    public void Initialize(PageSlotManager mgr, Transform s)
-    {
-        manager = mgr;
-        slot = s;
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        manager.OnSlotClicked(slot);
-    }
-}

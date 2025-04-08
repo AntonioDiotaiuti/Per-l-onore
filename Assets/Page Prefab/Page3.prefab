@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1110483534288731475}
   - component: {fileID: 1600516230365647793}
+  - component: {fileID: 5495889466571202980}
   m_Layer: 0
   m_Name: Slot5
   m_TagString: Untagged
@@ -53,6 +54,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5495889466571202980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80403761826308648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d9848e972bf994db84ea5b1a5505d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AssociatedIDPhoto: -1
 --- !u!1 &3257299865799831317
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,6 +77,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4507115698765491615}
   - component: {fileID: 5052592232170671146}
+  - component: {fileID: 279255662883718016}
   m_Layer: 0
   m_Name: Slot6
   m_TagString: Untagged
@@ -106,6 +121,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &279255662883718016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3257299865799831317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d9848e972bf994db84ea5b1a5505d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AssociatedIDPhoto: -1
 --- !u!1 &7557789863349129538
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,6 +233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3940249512541895850}
   - component: {fileID: 974885226809795538}
+  - component: {fileID: 6701946912573507504}
   m_Layer: 0
   m_Name: Slot7
   m_TagString: Untagged
@@ -248,3 +277,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6701946912573507504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8762784313428548186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d9848e972bf994db84ea5b1a5505d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AssociatedIDPhoto: -1
