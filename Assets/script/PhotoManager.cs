@@ -17,6 +17,9 @@ public class PhotoManager : MonoBehaviour
     public Button nextPageButton;
     public Button previousPageButton;
 
+    public Sprite arrowDownSprite;
+    public Sprite arrowUpSprite;
+
     public PageSlotManager pageSlotManager;
 
     private Stack<GameObject> photoStack = new Stack<GameObject>();
@@ -139,9 +142,23 @@ public class PhotoManager : MonoBehaviour
         {
             float offsetZ = -1.5f;
             if (isPhotoLowered)
+            {
                 currentPhoto.transform.position = originalPhotoPosition;
+                rotatePhotoButton.gameObject.SetActive(true); //  Riattiva il pulsante di rotazione
+                                                             
+                // Cambia sprite del bottone: freccia verso il basso
+                if (arrowDownSprite != null)
+                    lowerPhotoButton.image.sprite = arrowDownSprite;
+            }
             else
+            {
                 currentPhoto.transform.position += new Vector3(0, 0, offsetZ);
+                rotatePhotoButton.gameObject.SetActive(false); //  Disattiva il pulsante di rotazione
+
+                // Cambia sprite del bottone: freccia verso l’alto
+                if (arrowUpSprite != null)
+                    lowerPhotoButton.image.sprite = arrowUpSprite;
+            }
 
             isPhotoLowered = !isPhotoLowered;
         }
