@@ -43,7 +43,7 @@ public class PageSlotManager : MonoBehaviour
             {
                 if (slotHighlightPrefab)
                 {
-                    GameObject highlight = Instantiate(slotHighlightPrefab, slot.position + new Vector3(0, 0.07f, 0), Quaternion.Euler(90, 0, 0), slot);
+                    GameObject highlight = Instantiate(slotHighlightPrefab, slot.position + new Vector3(0, 0.06f, 0), Quaternion.Euler(90, 0, 0), slot);
                     highlight.SetActive(false);
                     slotHighlights[slot] = highlight;
                 }
