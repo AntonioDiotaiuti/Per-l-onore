@@ -142,7 +142,7 @@ public class PageSlotManager : MonoBehaviour
 
         GameObject photoInHand = photoManager.GetCurrentPhotoInHand();
 
-        if (pagePhotoMap[pageName].ContainsKey(slot) && pagePhotoMap[pageName][slot] != null)
+        if (photoInHand == null && pagePhotoMap[pageName].ContainsKey(slot) && pagePhotoMap[pageName][slot] != null)
         {
             GameObject existingPhoto = pagePhotoMap[pageName][slot];
             if (existingPhoto != null)
@@ -163,7 +163,7 @@ public class PageSlotManager : MonoBehaviour
             return;
         }
 
-        if (photoInHand != null)
+        if (photoInHand != null && (!pagePhotoMap.ContainsKey(pageName) || !pagePhotoMap[pageName].ContainsKey(slot) || pagePhotoMap[pageName][slot] == null))
         {
             Debug.Log("Placing photo!");
             pagePhotoMap[pageName][slot] = photoInHand;
