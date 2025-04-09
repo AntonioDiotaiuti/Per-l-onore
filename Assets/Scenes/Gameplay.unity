@@ -182,7 +182,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ff7769a14dece8a4f8a7321bfbbd9ae4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 77f0dee2e0d3498428087e4c8ed1ccab, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -541,8 +541,8 @@ MonoBehaviour:
   lowerPhotoButton: {fileID: 17553068}
   nextPageButton: {fileID: 1921389945}
   previousPageButton: {fileID: 893046513}
-  arrowDownSprite: {fileID: 21300000, guid: ff7769a14dece8a4f8a7321bfbbd9ae4, type: 3}
-  arrowUpSprite: {fileID: 21300000, guid: 75bb4810c182f4d498da1cbb58794023, type: 3}
+  arrowDownSprite: {fileID: 21300000, guid: 77f0dee2e0d3498428087e4c8ed1ccab, type: 3}
+  arrowUpSprite: {fileID: 21300000, guid: 79a156bf615b9c046b2dce48cf050afc, type: 3}
   pageSlotManager: {fileID: 1647930330}
 --- !u!1 &292952052
 GameObject:
@@ -2167,7 +2167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 29.970093, y: 0.30000305}
+  m_AnchoredPosition: {x: 29.970093, y: 0.2999878}
   m_SizeDelta: {x: -450, y: -314.33002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1921389945
