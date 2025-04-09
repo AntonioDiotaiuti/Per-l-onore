@@ -9,6 +9,7 @@ public class PageSlotManager : MonoBehaviour
     public Transform rightPageAnchor;
     public Button nextButton;
     public Button previousButton;
+
     [System.Serializable]
     public class AlbumPage
     {
@@ -26,12 +27,10 @@ public class PageSlotManager : MonoBehaviour
     private int currentPageIndex = 0;
     private Dictionary<GameObject, Vector3> originalScales = new();
     private PhotoManager photoManager;
-    private PhotoValidationManager validationManager;
 
     void Start()
     {
         photoManager = FindFirstObjectByType<PhotoManager>();
-        validationManager = FindFirstObjectByType<PhotoValidationManager>();
 
         foreach (var page in pages)
         {
@@ -104,7 +103,20 @@ public class PageSlotManager : MonoBehaviour
         {
             if (slotHighlights.ContainsKey(slot))
             {
-                slotHighlights[slot].SetActive(true);
+                bool shouldHighlight = true;
+                if (pagePhotoMap.TryGetValue(leftPage.pageName, out var slotMap) &&
+                    slotMap.TryGetValue(slot, out GameObject placedPhoto) &&
+                    placedPhoto != null)
+                {
+                    var photoHandler = placedPhoto.GetComponent<PhotoHandler>();
+                    var slotHandler = slot.GetComponent<SlotClickHandler>();
+                    if (photoHandler != null && slotHandler != null &&
+                        photoHandler.ID == slotHandler.AssociatedIDPhoto)
+                    {
+                        shouldHighlight = false;
+                    }
+                }
+                slotHighlights[slot].SetActive(shouldHighlight);
             }
         }
 
@@ -114,7 +126,20 @@ public class PageSlotManager : MonoBehaviour
             {
                 if (slotHighlights.ContainsKey(slot))
                 {
-                    slotHighlights[slot].SetActive(true);
+                    bool shouldHighlight = true;
+                    if (pagePhotoMap.TryGetValue(pages[rightPageIndex].pageName, out var slotMap) &&
+                        slotMap.TryGetValue(slot, out GameObject placedPhoto) &&
+                        placedPhoto != null)
+                    {
+                        var photoHandler = placedPhoto.GetComponent<PhotoHandler>();
+                        var slotHandler = slot.GetComponent<SlotClickHandler>();
+                        if (photoHandler != null && slotHandler != null &&
+                            photoHandler.ID == slotHandler.AssociatedIDPhoto)
+                        {
+                            shouldHighlight = false;
+                        }
+                    }
+                    slotHighlights[slot].SetActive(shouldHighlight);
                 }
             }
         }
@@ -133,12 +158,10 @@ public class PageSlotManager : MonoBehaviour
         }
     }
 
-
     public void OnSlotClicked(Transform slot, SlotClickHandler slotHandler)
     {
         var page = pages[currentPageIndex];
         var pageName = page.pageName;
-
 
         GameObject photoInHand = photoManager.GetCurrentPhotoInHand();
 
@@ -148,13 +171,14 @@ public class PageSlotManager : MonoBehaviour
             if (existingPhoto != null)
             {
                 var photoHandler = existingPhoto.GetComponent<PhotoHandler>();
-                if (photoHandler != null && !photoHandler.IsSameID(slotHandler.AssociatedIDPhoto)) // get photo in hand if the ID photo != ID slot
+                if (photoHandler != null && !photoHandler.IsSameID(slotHandler.AssociatedIDPhoto))
                 {
                     pagePhotoMap[pageName][slot] = null;
                     existingPhoto.transform.SetParent(null);
                     existingPhoto.transform.position = photoManager.handPosition.position;
                     photoManager.SetCurrentPhoto(existingPhoto);
-                } else
+                }
+                else
                 {
                     // TODO: handle pick up when photo is in position
                 }
@@ -166,11 +190,24 @@ public class PageSlotManager : MonoBehaviour
         if (photoInHand != null && (!pagePhotoMap.ContainsKey(pageName) || !pagePhotoMap[pageName].ContainsKey(slot) || pagePhotoMap[pageName][slot] == null))
         {
             Debug.Log("Placing photo!");
+            if (!pagePhotoMap.ContainsKey(pageName))
+                pagePhotoMap[pageName] = new Dictionary<Transform, GameObject>();
+
             pagePhotoMap[pageName][slot] = photoInHand;
             photoInHand.transform.position = slot.position;
             photoInHand.transform.SetParent(slot);
             photoManager.ClearCurrentPhoto();
 
+            // Disattiva highlight se la foto corretta per questo slot
+            var photoHandler = photoInHand.GetComponent<PhotoHandler>();
+            if (photoHandler != null && slotHighlights.ContainsKey(slot))
+            {
+                if (photoHandler.ID == slotHandler.AssociatedIDPhoto)
+                {
+                    slotHighlights[slot].SetActive(false);
+                    Debug.Log("Foto corretta: highlight disattivato.");
+                }
+            }
         }
     }
 
@@ -220,5 +257,3 @@ public class PageSlotManager : MonoBehaviour
         previousButton.interactable = (currentPageIndex - 2 >= 0);
     }
 }
-
-
