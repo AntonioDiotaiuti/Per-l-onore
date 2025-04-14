@@ -62,13 +62,13 @@ public class PageSlotManager : MonoBehaviour
     {
         if (index < 0 || index >= pages.Count) return;
 
+        // Nascondi tutte le pagine
         foreach (var page in pages)
         {
             page.pageObject.SetActive(false);
         }
 
-        int rightPageIndex = index + 1;
-
+        // Gestione della pagina sinistra
         AlbumPage leftPage = pages[index];
         leftPage.pageObject.SetActive(true);
         leftPage.pageObject.transform.position = leftPageAnchor.position;
@@ -79,6 +79,8 @@ public class PageSlotManager : MonoBehaviour
             leftPage.animator.SetTrigger("OpenPage");
         }
 
+        // Gestione della pagina destra
+        int rightPageIndex = index + 1;
         if (rightPageIndex < pages.Count)
         {
             AlbumPage rightPage = pages[rightPageIndex];
@@ -91,14 +93,33 @@ public class PageSlotManager : MonoBehaviour
                 rightPage.animator.SetTrigger("OpenPage");
             }
         }
+        else
+        {
+            // Se non ci sono pagine a destra, nascondi l'area destra
+            foreach (var page in pages)
+            {
+                page.pageObject.SetActive(false);
+            }
+
+            leftPage.pageObject.SetActive(true);
+            leftPage.pageObject.transform.position = leftPageAnchor.position;
+            leftPage.pageObject.transform.rotation = leftPageAnchor.rotation;
+            leftPage.pageObject.transform.localScale = leftPageAnchor.lossyScale;
+            if (leftPage.animator != null)
+            {
+                leftPage.animator.SetTrigger("OpenPage");
+            }
+        }
 
         currentPageIndex = index;
 
+        // Disattiva gli highlight per tutte le pagine
         foreach (var slot in slotHighlights.Keys)
         {
             slotHighlights[slot].SetActive(false);
         }
 
+        // Gestione degli highlight per la pagina sinistra
         foreach (var slot in leftPage.slots)
         {
             if (slotHighlights.ContainsKey(slot))
@@ -120,6 +141,7 @@ public class PageSlotManager : MonoBehaviour
             }
         }
 
+        // Gestione degli highlight per la pagina destra, se esiste
         if (rightPageIndex < pages.Count)
         {
             foreach (var slot in pages[rightPageIndex].slots)
@@ -230,7 +252,7 @@ public class PageSlotManager : MonoBehaviour
 
     public void NextPage()
     {
-        int nextIndex = currentPageIndex + 2;
+        int nextIndex = currentPageIndex + 1;
         if (nextIndex < pages.Count)
         {
             ShowPage(nextIndex);
@@ -239,7 +261,7 @@ public class PageSlotManager : MonoBehaviour
 
     public void PreviousPage()
     {
-        int previousIndex = currentPageIndex - 2;
+        int previousIndex = currentPageIndex - 1;
         if (previousIndex >= 0)
         {
             ShowPage(previousIndex);
@@ -253,7 +275,7 @@ public class PageSlotManager : MonoBehaviour
 
     private void UpdateNavigationButtons()
     {
-        nextButton.interactable = (currentPageIndex + 2 < pages.Count);
-        previousButton.interactable = (currentPageIndex - 2 >= 0);
+        nextButton.interactable = (currentPageIndex + 1 < pages.Count);
+        previousButton.interactable = (currentPageIndex - 1 >= 0);
     }
 }

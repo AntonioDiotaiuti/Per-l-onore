@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6d9848e972bf994db84ea5b1a5505d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AssociatedIDPhoto: -1
+  AssociatedIDPhoto: 3
 --- !u!1 &3390597283902714710
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,4 +221,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6d9848e972bf994db84ea5b1a5505d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AssociatedIDPhoto: -1
+  AssociatedIDPhoto: 4
