@@ -10,6 +10,9 @@ public class PageSlotManager : MonoBehaviour
     public Button nextButton;
     public Button previousButton;
 
+    //  Campo per l'effetto sonoro
+    public AudioSource pageTurnSound;
+
     [System.Serializable]
     public class AlbumPage
     {
@@ -233,6 +236,8 @@ public class PageSlotManager : MonoBehaviour
         int nextIndex = currentPageIndex + 1;
         if (nextIndex < pages.Count)
         {
+            if (pageTurnSound != null)
+                pageTurnSound.Play();
             ShowPage(nextIndex);
         }
     }
@@ -242,6 +247,8 @@ public class PageSlotManager : MonoBehaviour
         int previousIndex = currentPageIndex - 1;
         if (previousIndex >= 0)
         {
+            if (pageTurnSound != null)
+                pageTurnSound.Play();
             ShowPage(previousIndex);
         }
     }
@@ -257,3 +264,4 @@ public class PageSlotManager : MonoBehaviour
         previousButton.interactable = (currentPageIndex - 1 >= 0);
     }
 }
+
