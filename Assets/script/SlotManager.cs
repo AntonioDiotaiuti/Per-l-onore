@@ -230,7 +230,7 @@ public class PageSlotManager : MonoBehaviour
 
     public void NextPage()
     {
-        int nextIndex = currentPageIndex + 2;
+        int nextIndex = currentPageIndex + 1;
         if (nextIndex < pages.Count)
         {
             ShowPage(nextIndex);
@@ -239,7 +239,7 @@ public class PageSlotManager : MonoBehaviour
 
     public void PreviousPage()
     {
-        int previousIndex = currentPageIndex - 2;
+        int previousIndex = currentPageIndex - 1;
         if (previousIndex >= 0)
         {
             ShowPage(previousIndex);
@@ -253,7 +253,7 @@ public class PageSlotManager : MonoBehaviour
 
     private void UpdateNavigationButtons()
     {
-        nextButton.interactable = (currentPageIndex + 2 < pages.Count);
-        previousButton.interactable = (currentPageIndex - 2 >= 0);
+        nextButton.interactable = (currentPageIndex + 1 < pages.Count);
+        previousButton.interactable = (currentPageIndex - 1 >= 0);
     }
 }

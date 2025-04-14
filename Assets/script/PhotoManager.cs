@@ -9,6 +9,7 @@ public class PhotoManager : MonoBehaviour
     public Transform handPosition;
     public Transform reservePosition;
     public Transform album;
+    public Transform nextPhotoPosition; // Posizione per la prossima foto (sotto l'ultima foto)
 
     public Button pickPhotoButton;
     public Button reservePhotoButton;
@@ -25,6 +26,7 @@ public class PhotoManager : MonoBehaviour
     private Stack<GameObject> photoStack = new Stack<GameObject>();
     private GameObject currentPhoto;
     private GameObject reservedPhoto;
+    private GameObject nextPhoto; // La foto successiva che appare sotto
     private bool isPhotoRotated = false;
     private bool isPhotoLowered = false;
 
@@ -61,6 +63,14 @@ public class PhotoManager : MonoBehaviour
             photoStack.Push(photo);
         }
 
+        // Mostra la prima foto sulla scena
+        if (photoStack.Count > 0)
+        {
+            nextPhoto = photoStack.Peek(); // La prossima foto da prendere
+            nextPhoto.transform.position = nextPhotoPosition.position;
+            nextPhoto.SetActive(true);
+        }
+
         Debug.Log("Pila inizializzata con " + photoStack.Count + " foto.");
     }
 
@@ -92,6 +102,14 @@ public class PhotoManager : MonoBehaviour
             originalPhotoRotation = currentPhoto.transform.rotation;
             isPhotoRotated = false;
             isPhotoLowered = false;
+
+            // Mostra la prossima foto sotto
+            if (photoStack.Count > 0)
+            {
+                nextPhoto = photoStack.Peek();
+                nextPhoto.transform.position = nextPhotoPosition.position;
+                nextPhoto.SetActive(true);
+            }
         }
         else
         {
@@ -145,7 +163,7 @@ public class PhotoManager : MonoBehaviour
             {
                 currentPhoto.transform.position = originalPhotoPosition;
                 rotatePhotoButton.gameObject.SetActive(true); //  Riattiva il pulsante di rotazione
-                                                             
+
                 // Cambia sprite del bottone: freccia verso il basso
                 if (arrowDownSprite != null)
                     lowerPhotoButton.image.sprite = arrowDownSprite;

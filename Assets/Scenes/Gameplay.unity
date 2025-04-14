@@ -199,7 +199,7 @@ Transform:
   m_GameObject: {fileID: 15689222}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3.053, y: 13.24, z: 14.52}
+  m_LocalPosition: {x: -3.15, y: 13.24, z: 14.91}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -654,6 +654,7 @@ MonoBehaviour:
   handPosition: {fileID: 1464035884}
   reservePosition: {fileID: 1950841134}
   album: {fileID: 5315612111343930996}
+  nextPhotoPosition: {fileID: 61016567}
   pickPhotoButton: {fileID: 1402574082}
   reservePhotoButton: {fileID: 292952054}
   rotatePhotoButton: {fileID: 114422099}
@@ -698,7 +699,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -24.130005, y: -10.799988}
+  m_AnchoredPosition: {x: -24.130005, y: -9.77002}
   m_SizeDelta: {x: -450, y: -314}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &292952054
@@ -1075,8 +1076,8 @@ Transform:
   m_GameObject: {fileID: 736670958}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3.053, y: 13.24, z: 18.841}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalPosition: {x: -3.15, y: 13.24, z: 18.841}
+  m_LocalScale: {x: 1.92498, y: 1.8966, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1267,7 +1268,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893046511}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -357.4}
+  m_LocalPosition: {x: 0, y: 0, z: -357.97}
   m_LocalScale: {x: 0.025, y: 0.05, z: 0.10756364}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1952,7 +1953,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -23.670044, y: 6.5}
+  m_AnchoredPosition: {x: -24.190002, y: 6.5}
   m_SizeDelta: {x: -450, y: -314}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1402574082
@@ -4554,25 +4555,25 @@ SceneRoots:
   - {fileID: 972083787}
   - {fileID: 929211960}
   - {fileID: 365406921}
+  - {fileID: 736670961}
+  - {fileID: 15689225}
   - {fileID: 1478698068}
   - {fileID: 61016567}
   - {fileID: 1950841134}
   - {fileID: 1464035884}
   - {fileID: 5315612111343930996}
   - {fileID: 1315613264}
+  - {fileID: 778477595}
+  - {fileID: 1647930331}
+  - {fileID: 149984019}
+  - {fileID: 1487161809}
+  - {fileID: 1444836229}
   - {fileID: 1208291462}
   - {fileID: 146511444}
   - {fileID: 1425141728}
   - {fileID: 910474782}
-  - {fileID: 778477595}
-  - {fileID: 1647930331}
-  - {fileID: 149984019}
   - {fileID: 757311775}
   - {fileID: 1573900131}
   - {fileID: 482809346}
   - {fileID: 1427815526}
   - {fileID: 1827631528}
-  - {fileID: 1487161809}
-  - {fileID: 1444836229}
-  - {fileID: 736670961}
-  - {fileID: 15689225}
