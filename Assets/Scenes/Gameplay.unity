@@ -159,7 +159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.46002197, y: -1.0800171}
+  m_AnchoredPosition: {x: 0.45996094, y: -1.0800171}
   m_SizeDelta: {x: -450, y: -314}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &17553066
@@ -323,7 +323,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.4500122, y: 1.6600037}
+  m_AnchoredPosition: {x: 2.4499512, y: 1.6599731}
   m_SizeDelta: {x: -450, y: -313.59}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114422099
@@ -539,6 +539,22 @@ MonoBehaviour:
   - {fileID: 8520469469552349359, guid: 5a7a6339bc4530147ab26796b5f29769, type: 3}
   - {fileID: 8520469469552349359, guid: 89e0b05cc1303834eb8bb70769110969, type: 3}
   - {fileID: 8520469469552349359, guid: a81383fd763a80a47b5757bd886931c5, type: 3}
+  - {fileID: 8520469469552349359, guid: fc40cb80a6f4faf4b8d7d8a4558bf739, type: 3}
+  - {fileID: 8520469469552349359, guid: ebc447524c9688f4884b92ff9170fe88, type: 3}
+  - {fileID: 8520469469552349359, guid: afd539a38107abc41a452762d3bb34fc, type: 3}
+  - {fileID: 8520469469552349359, guid: 6359d874680f98549a753e0b7ce000c5, type: 3}
+  - {fileID: 8520469469552349359, guid: 49f6316250f744d4caefcbf883647340, type: 3}
+  - {fileID: 8520469469552349359, guid: a3cbf4f6d545d9441b2e64c21da4850a, type: 3}
+  - {fileID: 8520469469552349359, guid: 68c4f1256a9e7194a83eb3fdc9cbe87b, type: 3}
+  - {fileID: 8520469469552349359, guid: fcdfbde9b245ec3489a204ab60753695, type: 3}
+  - {fileID: 8520469469552349359, guid: 7ea31ab1b6579754d9f24fe6af035af9, type: 3}
+  - {fileID: 8520469469552349359, guid: 49b690527c46dcf42a4fd7fc595a1ac9, type: 3}
+  - {fileID: 8520469469552349359, guid: ff623cb249dd6cd4883ed61be99927a4, type: 3}
+  - {fileID: 8520469469552349359, guid: 552c2adb65059fc4e84b0cad08f66f59, type: 3}
+  - {fileID: 8520469469552349359, guid: 0bbab37b21d455a459f33cca3455dab9, type: 3}
+  - {fileID: 8520469469552349359, guid: a9924a129d38a8d4f94235f4c28ff383, type: 3}
+  - {fileID: 8520469469552349359, guid: d1bef1103b885a64e857acde699975d1, type: 3}
+  - {fileID: 8520469469552349359, guid: 083bade42c8940944ad45a956b4108c0, type: 3}
   pilePosition: {fileID: 61016567}
   handPosition: {fileID: 1464035884}
   reservePosition: {fileID: 1950841134}
