@@ -24,7 +24,7 @@ public class Loading : MonoBehaviour
                                "ti imbatti in un vecchio album impolverato.\n\n" +
                                "Lo apri con delicatezza, ma la copertina cede:\n" +
                                "una cascata di fotografie si riversa a terra, confondendosi fra loro.\n\n" +
-                               "Ora tocca a te…\n" +
+                               "Ora tocca a te\n" +
                                "rimettere insieme i pezzi di questa storia.\n" +
                                "Foto dopo foto. Ricordo dopo ricordo.";
 
